@@ -9,7 +9,8 @@ import (
 	"github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
 	"github.com/go-ozzo/ozzo-routing/v2/cors"
-	_ "github.com/lib/pq"
+	// _ "github.com/lib/pq"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/qiangxue/go-rest-api/internal/album"
 	"github.com/qiangxue/go-rest-api/internal/auth"
 	"github.com/qiangxue/go-rest-api/internal/config"
@@ -25,8 +26,9 @@ import (
 
 // Version indicates the current version of the application.
 var Version = "1.0.0"
-
-var flagConfig = flag.String("config", "./config/local.yml", "path to the config file")
+var dbType = "mysql"
+var defaultConfigFile = "./config/dev.yml"
+var flagConfig = flag.String("config", defaultConfigFile, "path to the config file")
 
 func main() {
 	flag.Parse()
@@ -41,7 +43,7 @@ func main() {
 	}
 
 	// connect to the database
-	db, err := dbx.MustOpen("postgres", cfg.DSN)
+	db, err := dbx.MustOpen(dbType, cfg.DSN)
 	if err != nil {
 		logger.Error(err)
 		os.Exit(-1)
@@ -55,7 +57,7 @@ func main() {
 	}()
 
 	// build HTTP server
-	address := fmt.Sprintf(":%v", cfg.ServerPort)
+	address := fmt.Sprintf(cfg.ServerIp+":%v", cfg.ServerPort)
 	hs := &http.Server{
 		Addr:    address,
 		Handler: buildHandler(logger, dbcontext.New(db), cfg),
