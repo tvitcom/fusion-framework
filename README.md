@@ -1,3 +1,17 @@
+# Preface
+
+I make some changes in the https://github.com/qiangxue/go-rest-api template according web development needs. 
+
+TODO change:
+
+- [x] change db type to mysql
+- [ ] code replacng to simple appropriate directories
+- [ ] apply html templates 
+- [ ] login jwt subscription
+- [ ] apply web forms for manage records in db
+- [ ] implement fasthttp (github.com/qiangxue/fasthttp-routing)
+
+
 # Go RESTful API Starter Kit (Boilerplate)
 
 [![GoDoc](https://godoc.org/github.com/qiangxue/go-rest-api?status.png)](http://godoc.org/github.com/qiangxue/go-rest-api)
