@@ -9,14 +9,17 @@ import (
 )
 
 const (
-	defaultServerPort         = 8080
+	defaultServerIp         = "0.0.0.0"
+	defaultServerPort         = "3000"
 	defaultJWTExpirationHours = 72
 )
 
 // Config represents an application configuration.
 type Config struct {
-	// the server port. Defaults to 8080
-	ServerPort int `yaml:"server_port" env:"SERVER_PORT"`
+	// the server port. Defaults to "0.0.0.0"
+	ServerIp string `yaml:"server_ip" env:"SERVER_IP"`
+	// the server port. Defaults to "3000"
+	ServerPort string `yaml:"server_port" env:"SERVER_PORT"`
 	// the data source name (DSN) for connecting to the database. required.
 	DSN string `yaml:"dsn" env:"DSN,secret"`
 	// JWT signing key. required.
@@ -37,6 +40,7 @@ func (c Config) Validate() error {
 func Load(file string, logger log.Logger) (*Config, error) {
 	// default config
 	c := Config{
+		ServerIp: defaultServerIp,
 		ServerPort:    defaultServerPort,
 		JWTExpiration: defaultJWTExpirationHours,
 	}
