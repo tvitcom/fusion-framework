@@ -8,6 +8,11 @@ import (
 	"net/http"
 )
 
+type resource struct {
+	service Service
+	logger  log.Logger
+}
+
 // RegisterHandlers sets up the routing of the HTTP handlers.
 func RegisterHandlers(r *routing.RouteGroup, service Service, authHandler routing.Handler, logger log.Logger) {
 	res := resource{service, logger}
@@ -21,11 +26,6 @@ func RegisterHandlers(r *routing.RouteGroup, service Service, authHandler routin
 	r.Post("/albums", res.create)
 	r.Put("/albums/<id>", res.update)
 	r.Delete("/albums/<id>", res.delete)
-}
-
-type resource struct {
-	service Service
-	logger  log.Logger
 }
 
 func (r resource) get(c *routing.Context) error {

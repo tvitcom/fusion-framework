@@ -7,6 +7,12 @@ import (
 	"github.com/qiangxue/go-rest-api/pkg/log"
 )
 
+// repository persists albums in database
+type repository struct {
+	db     *dbcontext.DB
+	logger log.Logger
+}
+
 // Repository encapsulates the logic to access albums from the data source.
 type Repository interface {
 	// Get returns the album with the specified album ID.
@@ -21,12 +27,6 @@ type Repository interface {
 	Update(ctx context.Context, album entity.Album) error
 	// Delete removes the album with given ID from the storage.
 	Delete(ctx context.Context, id string) error
-}
-
-// repository persists albums in database
-type repository struct {
-	db     *dbcontext.DB
-	logger log.Logger
 }
 
 // NewRepository creates a new album repository
