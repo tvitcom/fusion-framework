@@ -77,7 +77,7 @@ make run
 make run-live
 ```
 
-At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. It provides the following endpoints:
+At this time, you have a RESTful API server running at `http://127.0.0.1:3000`. It provides the following endpoints:
 
 * `GET /healthcheck`: a healthcheck service provided for health checking purpose (needed when implementing a server cluster)
 * `POST /v1/login`: authenticates a user and generates a JWT
@@ -87,18 +87,18 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `PUT /v1/albums/:id`: updates an existing album
 * `DELETE /v1/albums/:id`: deletes an album
 
-Try the URL `http://localhost:8080/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
+Try the URL `http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
 
 If you have `cURL` or some API client tools (e.g. [Postman](https://www.getpostman.com/)), you may try the following 
 more complex scenarios:
 
 ```shell
 # authenticate the user via: POST /v1/login
-curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "password": "pass"}' http://localhost:8080/v1/login
+curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "password": "pass"}' http://localhost:3000/v1/login
 # should return a JWT token like: {"token":"...JWT token here..."}
 
 # with the above JWT token, access the album resources, such as: GET /v1/albums
-curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:8080/v1/albums
+curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:3000/v1/albums
 # should return a list of album records in the JSON format
 ```
 

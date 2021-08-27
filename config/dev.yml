@@ -1,4 +1,4 @@
-app_name: "ozzo"
+app_name: "restapi"
 server_ip: "0.0.0.0"
 server_port: "3000"
 dsn_type: "mysql"
