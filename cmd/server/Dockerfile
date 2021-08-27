@@ -1,4 +1,4 @@
-FROM golang:alpine AS build
+FROM golang:alpine AS container
 RUN apk update && \
     apk add curl \
             git \
@@ -19,19 +19,19 @@ COPY go.* ./
 RUN go mod download
 RUN go mod verify
 
-# copy source files and build the binary
+# copy source files and container the binary
 COPY . .
-RUN make build
+RUN make container
 
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates bash
 RUN mkdir -p /var/log/app
 WORKDIR /app/
-COPY --from=build /usr/local/bin/migrate /usr/local/bin
-COPY --from=build /app/migrations ./migrations/
-COPY --from=build /app/server .
-COPY --from=build /app/cmd/server/entrypoint.sh .
-COPY --from=build /app/config/*.yml ./config/
+COPY --from=container /usr/local/bin/migrate /usr/local/bin
+COPY --from=container /app/migrations ./migrations/
+COPY --from=container /app/server .
+COPY --from=container /app/cmd/server/entrypoint.sh .
+COPY --from=container /app/config/*.yml ./config/
 RUN ls -la
 ENTRYPOINT ["./entrypoint.sh"]
