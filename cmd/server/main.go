@@ -26,7 +26,6 @@ import (
 
 // Version indicates the current version of the application.
 var Version = "1.0.0"
-var dbType = "mysql"
 var defaultConfigFile = "./config/dev.yml"
 var flagConfig = flag.String("config", defaultConfigFile, "path to the config file")
 
@@ -43,7 +42,7 @@ func main() {
 	}
 
 	// connect to the database
-	db, err := dbx.MustOpen(dbType, cfg.DSN)
+	db, err := dbx.MustOpen(cfg.dbType, cfg.DSN)
 	if err != nil {
 		logger.Error(err)
 		os.Exit(-1)

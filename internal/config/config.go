@@ -9,8 +9,11 @@ import (
 )
 
 const (
-	defaultServerIp         = "0.0.0.0"
-	defaultServerPort         = "3000"
+	defaultAppName	= "ozzo"
+	defaultServerIp = "0.0.0.0"
+	defaultServerPort = "3000"
+	defaultDsn        = "ozzo:pass_to_ozzo@/ozzo?parseTime=true"
+	defaultDbType     = "mysql"
 	defaultJWTExpirationHours = 72
 )
 
@@ -22,6 +25,8 @@ type Config struct {
 	ServerPort string `yaml:"server_port" env:"SERVER_PORT"`
 	// the data source name (DSN) for connecting to the database. required.
 	DSN string `yaml:"dsn" env:"DSN,secret"`
+	// the data source name (DSN) for connecting to the database. required.
+	DBType string `yaml:"dsn_type" env:"DSN_TYPE"`
 	// JWT signing key. required.
 	JWTSigningKey string `yaml:"jwt_signing_key" env:"JWT_SIGNING_KEY,secret"`
 	// JWT expiration in hours. Defaults to 72 hours (3 days)
@@ -32,6 +37,9 @@ type Config struct {
 func (c Config) Validate() error {
 	return validation.ValidateStruct(&c,
 		validation.Field(&c.DSN, validation.Required),
+		validation.Field(&c.DBType, validation.Required),
+		validation.Field(&c.ServerIp, validation.Required),
+		validation.Field(&c.ServerPort, validation.Required),
 		validation.Field(&c.JWTSigningKey, validation.Required),
 	)
 }
