@@ -71,7 +71,7 @@ func (s service) Create(ctx context.Context, req CreateAlbumRequest) (Album, err
 	if err := req.Validate(); err != nil {
 		return Album{}, err
 	}
-	id := entity.GenerateID()
+	id := entity.GenerateUUID()
 	now := time.Now()
 	err := s.repo.Create(ctx, entity.Album{
 		ID:        id,

@@ -4,13 +4,12 @@ I make some changes in the https://github.com/qiangxue/go-rest-api template acco
 
 TODO change:
 
-- [ ] fix unauthorised access - bad jwt don't prevent access
+- [x] fix unauthorised access for detail info also
 - [x] change db type to mysql
+- [ ] implement fasthttp (github.com/qiangxue/fasthttp-routing)
 - [ ] code replacng to simple appropriate directories
 - [ ] apply html templates 
-- [ ] login jwt subscription
 - [ ] apply web forms for manage records in db
-- [ ] implement fasthttp (github.com/qiangxue/fasthttp-routing)
 
 
 # Go RESTful API Starter Kit (Boilerplate)

@@ -90,7 +90,8 @@ func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.
 
 	album.RegisterHandlers(rg.Group(""),
 		album.NewService(album.NewRepository(db, logger), logger),
-		authHandler, logger,
+		authHandler, 
+		logger,
 	)
 
 	auth.RegisterHandlers(rg.Group(""),
