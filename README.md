@@ -4,6 +4,7 @@ I make some changes in the https://github.com/qiangxue/go-rest-api template acco
 
 TODO change:
 
+- [ ] fix unauthorised access - bad jwt don't prevent access
 - [x] change db type to mysql
 - [ ] code replacng to simple appropriate directories
 - [ ] apply html templates 
@@ -71,6 +72,9 @@ make testdata
 
 # run the RESTful API server
 make run
+
+# Or develepment:
+make dev
 
 # or run the API server with live reloading, which is useful during development
 # requires fswatch (https://github.com/emcrisostomo/fswatch)
