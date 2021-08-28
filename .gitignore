@@ -1,6 +1,7 @@
 # Project specific
 *.sublime-project
 *.sublime-workspace
+go.sum
 
 # Binaries for programs and plugins
 *.exe
@@ -13,11 +14,9 @@
 # Test binary, built with `go test -c`
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
 # Test coverage output
 coverage*.*
+*.out
 
 # postgres data volume used by postgres server container for testing purpose
 testdata/postgres
