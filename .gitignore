@@ -1,3 +1,6 @@
+# Project specific
+*.sublime-project
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
