@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"github.com/golang-jwt/jwt"
+	"github.com/dgrijalva/jwt-go"
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/auth"
 	"github.com/qiangxue/go-rest-api/internal/entity"
