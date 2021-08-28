@@ -1,5 +1,6 @@
 # Project specific
 *.sublime-project
+*.sublime-workspace
 
 # Binaries for programs and plugins
 *.exe
