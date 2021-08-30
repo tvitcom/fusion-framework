@@ -6,11 +6,8 @@ TODO change:
 
 - [x] fix unauthorised access for detail info also
 - [x] change db type to mysql
-- [ ] implement fasthttp (github.com/qiangxue/fasthttp-routing)
-- [ ] code replacng to simple appropriate directories
 - [ ] apply html templates 
 - [ ] apply web forms for manage records in db
-
 
 # Go RESTful API Starter Kit (Boilerplate)
 
@@ -141,7 +138,7 @@ The starter kit uses the following project layout:
 .
 ├── cmd                  main applications of the project
 │   └── server           the API server application
-├── config               configuration files for different environments
+├── configs               configuration files for different environments
 ├── internal             private application and library code
 │   ├── album            album-related features
 │   ├── auth             authentication feature
