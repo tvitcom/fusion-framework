@@ -1,6 +1,6 @@
 # Preface
 
-I make some changes in the https://github.com/tvitcom/qiangxue-ozzo-template template according web development needs. 
+I make some changes in the https://github.com/qiangxue/go-rest-api template according web development needs. 
 
 TODO change:
 
@@ -11,13 +11,7 @@ TODO change:
 
 # Go RESTful API Starter Kit (Boilerplate)
 
-[![GoDoc](https://godoc.org/github.com/tvitcom/qiangxue-ozzo-template?status.png)](http://godoc.org/github.com/tvitcom/qiangxue-ozzo-template)
-[![Build Status](https://github.com/tvitcom/qiangxue-ozzo-template/workflows/build/badge.svg)](https://github.com/tvitcom/qiangxue-ozzo-template/actions?query=workflow%3Abuild)
-[![Code Coverage](https://codecov.io/gh/qiangxue/go-rest-api/branch/master/graph/badge.svg)](https://codecov.io/gh/qiangxue/go-rest-api)
-[![Go Report](https://goreportcard.com/badge/github.com/tvitcom/qiangxue-ozzo-template)](https://goreportcard.com/report/github.com/tvitcom/qiangxue-ozzo-template)
-
-This starter kit is designed to get you up and running with a project structure optimized for developing
-RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
+This starter kit is designed to get you up and running with a project structure optimized for webapp developing RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
 and [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
 It encourages writing clean and idiomatic Go code. 
 
@@ -89,7 +83,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:3000`. 
 
 Try the URL `http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
 
-If you have `cURL` or some API client tools (e.g. [Postman](https://www.getpostman.com/)), you may try the following 
+If you have `cURL` or some API client tools (e.g. [PostmanCanary](https://www.postman.com/downloads/canary/)), you may try the following 
 more complex scenarios:
 
 ```shell
@@ -105,7 +99,9 @@ curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:300
 For example you can login, get list without token, get item without token, get with token, delete item with token and get deleted item:
 
 ```shell
-
+# In another shell window:
+User@local-host:~/$ make dev
+# Then:
 User@local-host:~/$ curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "password": "pass"}' http://localhost:3000/v1/login
 Return:
 {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc"}
