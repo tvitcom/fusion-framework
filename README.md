@@ -103,9 +103,12 @@ curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "passw
 # with the above JWT token, access the album resources, such as: GET /v1/albums
 curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:3000/v1/albums
 # should return a list of album records in the JSON format
+
 ```
 For example you can login, get list without token, get item without token, get with token, delete item with token and get deleted item:
-````console
+
+```shell
+
 User@local-host:~/$ curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "password": "pass"}' http://localhost:3000/v1/login
 Return:
 {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc"}
@@ -134,7 +137,7 @@ replacement of the string `github.com/tvitcom/qiangxue-ozzo-template` in all of 
 
 The starter kit uses the following project layout:
  
-```console
+```shell
 .
 ├── cmd                  main applications of the project
 │   └── server           the API server application
@@ -260,6 +263,4 @@ command,
 
 ```shell
 ./server -config=./config/prod.yml
-```
-
 ```
