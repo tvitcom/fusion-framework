@@ -1,10 +1,10 @@
 package album
 
 import (
-	"github.com/qiangxue/go-rest-api/internal/auth"
-	"github.com/qiangxue/go-rest-api/internal/entity"
-	"github.com/qiangxue/go-rest-api/internal/test"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/auth"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/entity"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/test"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 	"net/http"
 	"testing"
 	"time"

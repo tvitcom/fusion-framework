@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"

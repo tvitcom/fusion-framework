@@ -3,8 +3,8 @@ package album
 import (
 	"context"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/qiangxue/go-rest-api/internal/entity"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/entity"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 	"time"
 )
 

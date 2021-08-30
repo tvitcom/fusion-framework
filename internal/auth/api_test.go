@@ -2,9 +2,9 @@ package auth
 
 import (
 	"context"
-	"github.com/qiangxue/go-rest-api/internal/errors"
-	"github.com/qiangxue/go-rest-api/internal/test"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/errors"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/test"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 	"net/http"
 	"testing"
 )

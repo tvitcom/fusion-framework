@@ -1,4 +1,4 @@
-module github.com/qiangxue/go-rest-api
+module github.com/tvitcom/qiangxue-ozzo-template
 
 go 1.15
 

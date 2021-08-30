@@ -2,9 +2,9 @@ package album
 
 import (
 	"context"
-	"github.com/qiangxue/go-rest-api/internal/entity"
-	"github.com/qiangxue/go-rest-api/pkg/dbcontext"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/entity"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/dbcontext"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 )
 
 // repository persists albums in database

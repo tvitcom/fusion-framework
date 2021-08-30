@@ -4,9 +4,9 @@ import (
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
 	"github.com/go-ozzo/ozzo-routing/v2/cors"
-	"github.com/qiangxue/go-rest-api/internal/errors"
-	"github.com/qiangxue/go-rest-api/pkg/accesslog"
-	"github.com/qiangxue/go-rest-api/pkg/log"
+	"github.com/tvitcom/qiangxue-ozzo-template/internal/errors"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/accesslog"
+	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
 	"net/http"
 	"net/http/httptest"
 )

@@ -1,6 +1,6 @@
 # Preface
 
-I make some changes in the https://github.com/qiangxue/go-rest-api template according web development needs. 
+I make some changes in the https://github.com/tvitcom/qiangxue-ozzo-template template according web development needs. 
 
 TODO change:
 
@@ -14,10 +14,10 @@ TODO change:
 
 # Go RESTful API Starter Kit (Boilerplate)
 
-[![GoDoc](https://godoc.org/github.com/qiangxue/go-rest-api?status.png)](http://godoc.org/github.com/qiangxue/go-rest-api)
-[![Build Status](https://github.com/qiangxue/go-rest-api/workflows/build/badge.svg)](https://github.com/qiangxue/go-rest-api/actions?query=workflow%3Abuild)
+[![GoDoc](https://godoc.org/github.com/tvitcom/qiangxue-ozzo-template?status.png)](http://godoc.org/github.com/tvitcom/qiangxue-ozzo-template)
+[![Build Status](https://github.com/tvitcom/qiangxue-ozzo-template/workflows/build/badge.svg)](https://github.com/tvitcom/qiangxue-ozzo-template/actions?query=workflow%3Abuild)
 [![Code Coverage](https://codecov.io/gh/qiangxue/go-rest-api/branch/master/graph/badge.svg)](https://codecov.io/gh/qiangxue/go-rest-api)
-[![Go Report](https://goreportcard.com/badge/github.com/qiangxue/go-rest-api)](https://goreportcard.com/report/github.com/qiangxue/go-rest-api)
+[![Go Report](https://goreportcard.com/badge/github.com/tvitcom/qiangxue-ozzo-template)](https://goreportcard.com/report/github.com/tvitcom/qiangxue-ozzo-template)
 
 This starter kit is designed to get you up and running with a project structure optimized for developing
 RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
@@ -59,7 +59,7 @@ After installing Go and Docker, rename config/_dev.yml to configs/dev.yml them f
 
 ```shell
 # download the starter kit
-git clone https://github.com/qiangxue/go-rest-api.git
+git clone https://github.com/tvitcom/qiangxue-ozzo-template.git
 
 cd go-rest-api
 
@@ -126,15 +126,15 @@ Return:
 {"status":404,"message":"The requested resource was not found."}
 
 ```
-To use the starter kit as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
-replacement of the string `github.com/qiangxue/go-rest-api` in all of project files with the string `github.com/abc/xyz`.
 
+To use the starter kit as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
+replacement of the string `github.com/tvitcom/qiangxue-ozzo-template` in all of project files with the string `github.com/abc/xyz`.
 
 ## Project Layout
 
 The starter kit uses the following project layout:
  
-```
+```console
 .
 ├── cmd                  main applications of the project
 │   └── server           the API server application
