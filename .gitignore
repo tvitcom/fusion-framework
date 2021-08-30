@@ -26,3 +26,8 @@ testdata/postgres
 
 # PID file generated to support live reload
 .pid
+
+# Secrets and credentials
+/configs/*
+!/configs/_dev.yml
+
