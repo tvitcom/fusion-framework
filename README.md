@@ -104,7 +104,28 @@ curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "passw
 curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:3000/v1/albums
 # should return a list of album records in the JSON format
 ```
+For example you can login, get list without token, get item without token, get with token, delete item with token and get deleted item:
+````console
+User@local-host:~/$ curl -X POST -H "Content-Type: application/json" -d '{"username": "demo", "password": "pass"}' http://localhost:3000/v1/login
+Return:
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc"}
+User@local-host:~/$ curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:3000/v1/albums
+Return:
+{"page":1,"per_page":100,"page_count":1,"total_count":5,"items":[{"id":"2367710a-d4fb-49f5-8860-557b337386dd","name":"KIRK","created_at":"2019-10-05T05:21:11Z","updated_at":"2019-10-05T05:21:11Z"},{"id":"967d5bb5-3a7a-4d5e-8a6c-febc8c5b3f13","name":"Hollywood's Bleeding","created_at":"2019-10-01T15:36:38Z","updated_at":"2019-10-01T15:36:38Z"},{"id":"b0a24f12-428f-4ff5-84d5-bc1fdcff6f03","name":"Lover","created_at":"2019-10-11T19:43:18Z","updated_at":"2019-10-11T19:43:18Z"},{"id":"c809bf15-bc2c-4621-bb96-70af96fd5d67","name":"AI YoungBoy 2","created_at":"2019-10-02T11:16:12Z","updated_at":"2019-10-02T11:16:12Z"},{"id":"e0bb80ec-75a6-4348-bfc3-6ac1e89b195e","name":"So Much Fun","created_at":"2019-10-12T12:16:02Z","updated_at":"2019-10-12T12:16:02Z"}]}
+User@local-host:~/$ curl -X GET -H "Authorization: Bearer ...JWT token here..." http://localhost:3000/v1/albums/2367710a-d4fb-49f5-8860-557b337386dd
+Return:
+{"status":401,"message":"token contains an invalid number of segments"}
+User@local-host:~/$ curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc" http://localhost:3000/v1/albums/2367710a-d4fb-49f5-8860-557b337386dd
+Return:
+{"id":"2367710a-d4fb-49f5-8860-557b337386dd","name":"KIRK","created_at":"2019-10-05T05:21:11Z","updated_at":"2019-10-05T05:21:11Z"}
+User@local-host:~/$ curl -X DELETE -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc" http://localhost:3000/v1/albums/2367710a-d4fb-49f5-8860-557b337386dd
+Return:
+{"id":"2367710a-d4fb-49f5-8860-557b337386dd","name":"KIRK","created_at":"2019-10-05T05:21:11Z","updated_at":"2019-10-05T05:21:11Z"}
+User@local-host:~/$ curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA1OTA5OTIsImlkIjoiMTAwIiwibmFtZSI6ImRlbW8ifQ.KcLzDVGBTp3_USJ2OhzSbUBesqgKiwqF6lpJIjkrKcc" http://localhost:3000/v1/albums/2367710a-d4fb-49f5-8860-557b337386dd
+Return:
+{"status":404,"message":"The requested resource was not found."}
 
+```
 To use the starter kit as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
 replacement of the string `github.com/qiangxue/go-rest-api` in all of project files with the string `github.com/abc/xyz`.
 
