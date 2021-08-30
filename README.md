@@ -55,7 +55,7 @@ install Go on your computer. The kit requires **Go 1.13 or above**.
 [Docker](https://www.docker.com/get-started) is also needed if you want to try the kit without setting up your
 own database server. The kit requires **Docker 17.05 or higher** for the multi-stage build support.
 
-After installing Go and Docker, run the following commands to start experiencing this starter kit:
+After installing Go and Docker, rename config/_dev.yml to configs/dev.yml them fill appropriately. Run the following commands to start experiencing this starter kit:
 
 ```shell
 # download the starter kit
@@ -215,12 +215,12 @@ make migrate-reset
 
 The application configuration is represented in `internal/config/config.go`. When the application starts,
 it loads the configuration from a configuration file as well as environment variables. The path to the configuration 
-file is specified via the `-config` command line argument which defaults to `./config/local.yml`. Configurations
+file is specified via the `-config` command line argument which defaults to `./config/dev.yml`. Configurations
 specified in environment variables should be named with the `APP_` prefix and in upper case. When a configuration
 is specified in both a configuration file and an environment variable, the latter takes precedence. 
 
 The `config` directory contains the configuration files named after different environments. For example,
-`config/local.yml` corresponds to the local development environment and is used when running the application 
+`config/dev.yml` corresponds to the local development environment and is used when running the application 
 via `make run`.
 
 Do not keep secrets in the configuration files. Provide them via environment variables instead. For example,

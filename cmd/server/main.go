@@ -26,8 +26,8 @@ import (
 
 // Version indicates the current version of the application.
 var Version = "1.0.0"
-var defaultConfigFile = "./config/dev.yml"
-var flagConfig = flag.String("config", defaultConfigFile, "path to the config file")
+var defaultConfigFile = "./configs/dev.yml"
+var configFile = flag.String("config", defaultConfigFile, "path to the config file")
 
 func main() {
 	flag.Parse()
@@ -35,7 +35,7 @@ func main() {
 	logger := log.New().With(nil, "version", Version)
 
 	// load application configurations
-	cfg, err := config.Load(*flagConfig, logger)
+	cfg, err := config.Load(*configFile, logger)
 	if err != nil {
 		logger.Errorf("failed to load application configuration: %s", err)
 		os.Exit(-1)

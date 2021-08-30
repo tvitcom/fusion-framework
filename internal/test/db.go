@@ -20,7 +20,7 @@ func DB(t *testing.T) *dbcontext.DB {
 	}
 	logger, _ := log.NewForTest()
 	dir := getSourcePath()
-	cfg, err := config.Load(dir+"/../../config/local.yml", logger)
+	cfg, err := config.Load(dir+"/../../config/dev.yml", logger)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()

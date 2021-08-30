@@ -3,7 +3,7 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null 
 PACKAGES := $(shell go list ./... | grep -v /vendor/)
 LDFLAGS := -ldflags "-X main.Version=${VERSION}"
 
-CONFIG_FILE ?= ./config/local.yml
+CONFIG_FILE ?= ./configs/dev.yml
 APP_DSN ?= $(shell sed -n 's/^dsn:[[:space:]]*"\(.*\)"/\1/p' $(CONFIG_FILE))
 TYPE_DSN ?= $(shell sed -n 's/^dsn_type:[[:space:]]*"\(.*\)"/\1/p' $(CONFIG_FILE))
 MIGRATE := docker run -v $(shell pwd)/migrations:/migrations --network host migrate/migrate:v4.10.0 -path=/migrations/ -database "$(APP_DSN)"
@@ -32,11 +32,11 @@ test-cover: test ## run unit tests and show test coverage information
 
 .PHONY: run
 run: ## run the API server
-	go run ${LDFLAGS} cmd/server/main.go
+	go run ${LDFLAGS} cmd/server/main.go -config=./configs/prod.yml
 
 .PHONY: dev
 dev: ## run the API server
-	go run ${LDFLAGS} cmd/server/main.go -config=./config/dev.yml
+	go run ${LDFLAGS} cmd/server/main.go -config=./configs/dev.yml
 
 .PHONY: run-restart
 run-restart: ## restart the API server
