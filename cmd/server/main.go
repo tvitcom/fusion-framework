@@ -56,15 +56,15 @@ func main() {
 	}()
 
 	// build HTTP server
-	address := fmt.Sprintf(cfg.ServerIp+":%v", cfg.ServerPort)
+	httpEndpoint := fmt.Sprintf(cfg.ServerIp+":%v", cfg.ServerPort)
 	hs := &http.Server{
-		Addr:    address,
+		Addr:    httpEndpoint,
 		Handler: buildHandler(logger, dbcontext.New(db), cfg),
 	}
 
 	// start the HTTP server with graceful shutdown
 	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
-	logger.Infof("server %v is running at %v", Version, address)
+	logger.Infof("server %v is running at %v", Version, httpEndpoint)
 	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logger.Error(err)
 		os.Exit(-1)
