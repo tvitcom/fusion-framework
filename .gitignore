@@ -4,6 +4,8 @@
 go.sum
 
 # Binaries for programs and plugins
+/main
+/cmd/server/main
 *.exe
 *.exe~
 *.dll
