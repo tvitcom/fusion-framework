@@ -9,11 +9,9 @@ import (
 )
 
 const (
-	defaultAppName	= "ozzo"
+	defaultAppName	= "fusion"
 	defaultServerIp = "0.0.0.0"
 	defaultServerPort = "3000"
-	defaultDsn        = "ozzo:pass_to_ozzo@/ozzo?parseTime=true"
-	defaultDbType     = "mysql"
 	defaultJWTExpirationHours = 72
 )
 
