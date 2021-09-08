@@ -1,35 +1,45 @@
 # Preface
+GoLang is a great programming language for building Web Projects. I wanted to build a golang framework on httprouter after real benchmark comparison on my slow old netbook (gin, fasthttp and ozzo-routing were is slower than httprouter unexpectedly). First of all, it will be a framework for high-load web applications, and for resist network threats.
 
+## Introduction
 I make some changes in the https://github.com/qiangxue/go-rest-api template according web development needs. 
+To get an idea of the features to be included in the project of this article provides a number of examples on how these features can be implemented ([Git Repo](https://github.com/brianwoo/server_side_dev_with_golang)). Structure of the project were be inspired from ozzo framework and https://github.com/qiangxue/go-rest-api former author of php yii framework and golang project layout [https://github.com/golang-standards/project-layout].
 
-TODO change:
+Now features:
+- [x] RESTful accepted format
+- [x] CRUD operations of a database table
+- [x] JWT authentication
+- [x] Environment dependent ozzo-config configuration management
+- [x] ozzo-validation library
+- [x] Structured logging with contextual information
+- [x] Error handling with proper error response generation
+- [x] ozzo-dbx database library
+- [x] Database migration
+- [x] Data validation
+- [x] Test coverage
+- [x] Live reloading during development
+- [x] change db type to mysql (without dockerize this one)
+- [x] Makefile for development
 
-- [x] fix unauthorised access for detail info also
-- [x] change db type to mysql
-- [ ] apply html templates 
-- [ ] apply web forms for manage records in db
+Todo change:
+- [ ] replace ozzo-routing to julienschmidt's httprouter
+- [ ] apply html templates/web-forms for manage records in db
+- [ ] HTTP redirection to HTTPS port
+- [ ] CORS Resource Sharing
+- [ ] Replace jwt library from drigvaila to JOSE
+- [ ] JWT authentication in the cookie HttpOnly store
+- [ ] Uploading files by secure pipelining
+- [ ] Golang standart structure
+- [ ] Default html template
+- [ ] OAuth2 with Google
+- [ ] OAuth2 with Facebook
+- [ ] Integration frontend development pipeline
+- [ ] Crud RESTAPI generator
+- [ ] Migrations
+- [ ] Healthchecks and metrics endpoints
+- [ ] Docker implementation for development pipeline
 
-# Go RESTful API Starter Kit (Boilerplate)
-
-This starter kit is designed to get you up and running with a project structure optimized for webapp developing RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
-and [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
-It encourages writing clean and idiomatic Go code. 
-
-The kit provides the following features right out of the box:
-
-* RESTful endpoints in the widely accepted format
-* Standard CRUD operations of a database table
-* JWT-based authentication
-* Environment dependent application configuration management
-* Structured logging with contextual information
-* Error handling with proper error response generation
-* Database migration
-* Data validation
-* Full test coverage
-* Live reloading during development
- 
-The kit uses the following Go packages which can be easily replaced with your own favorite ones
-since their usages are mostly localized and abstracted. 
+The framework uses the following Go packages which can be replaced with your own favorite ones since their usages are mostly localized and abstracted. 
 
 * Routing: [ozzo-routing](https://github.com/go-ozzo/ozzo-routing)
 * Database access: [ozzo-dbx](https://github.com/go-ozzo/ozzo-dbx)
@@ -38,21 +48,27 @@ since their usages are mostly localized and abstracted.
 * Logging: [zap](https://github.com/uber-go/zap)
 * JWT: [jwt-go](https://github.com/dgrijalva/jwt-go)
 
+# Building a Web Project with Fusion-framework
+
+This fusion-framework is designed to get you up and running with a project structure optimized for webapp developing RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
+and [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
+It encourages writing clean and idiomatic Go code. 
+
 ## Getting Started
 
 If this is your first time encountering Go, please follow [the instructions](https://golang.org/doc/install) to
-install Go on your computer. The kit requires **Go 1.13 or above**.
+install Go on your computer. The kit requires **Go 1.15 or above**.
 
 [Docker](https://www.docker.com/get-started) is also needed if you want to try the kit without setting up your
 own database server. The kit requires **Docker 17.05 or higher** for the multi-stage build support.
 
-After installing Go and Docker, rename config/_dev.yml to configs/dev.yml them fill appropriately. Run the following commands to start experiencing this starter kit:
+After installing Go and Docker, rename config/_dev.yml to configs/dev.yml them fill appropriately. Run the following commands to start experiencing this fusion-framework:
 
 ```shell
-# download the starter kit
-git clone https://github.com/tvitcom/qiangxue-ozzo-template.git
+# download the fusion-framework
+git clone https://github.com/tvitcom/fusion-framework.git
 
-cd go-rest-api
+cd fusion-framework
 
 # start a PostgreSQL database server in a Docker container
 make db-start
@@ -123,12 +139,12 @@ Return:
 
 ```
 
-To use the starter kit as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
-replacement of the string `github.com/tvitcom/qiangxue-ozzo-template` in all of project files with the string `github.com/abc/xyz`.
+To use the fusion-framework as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
+replacement of the string `github.com/tvitcom/fusion-framework` in all of project files with the string `github.com/abc/xyz`.
 
 ## Project Layout
 
-The starter kit uses the following project layout:
+The fusion-framework uses the following project layout:
  
 ```shell
 .
@@ -165,7 +181,7 @@ as described in the [clean architecture](https://blog.cleancoder.com/uncle-bob/2
 
 ## Common Development Tasks
 
-This section describes some common development tasks using this starter kit.
+This section describes some common development tasks using this fusion-framework.
 
 ### Implementing a New Feature
 
@@ -204,7 +220,7 @@ This is especially useful if an API handler needs to put method calls of multipl
 
 ### Updating Database Schema
 
-The starter kit uses [database migration](https://en.wikipedia.org/wiki/Schema_migration) to manage the changes of the 
+The fusion-framework uses [database migration](https://en.wikipedia.org/wiki/Schema_migration) to manage the changes of the 
 database schema over the whole project development phase. The following commands are commonly used with regard to database
 schema changes:
 
