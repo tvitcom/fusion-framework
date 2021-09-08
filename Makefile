@@ -32,11 +32,11 @@ test-cover: test ## run unit tests and show test coverage information
 
 .PHONY: run
 run: ## run the API server
-	go run ${LDFLAGS} cmd/server/main.go -config=./configs/prod.yml
+	go run ${LDFLAGS} cmd/server/main.go -config=configs/prod.yml
 
 .PHONY: dev
 dev: ## run the API server
-	go run ${LDFLAGS} cmd/server/main.go -config=./configs/dev.yml
+	go run ${LDFLAGS} cmd/server/main.go -config=configs/dev.yml
 
 .PHONY: run-restart
 run-restart: ## restart the API server
