@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/test"
+	"github.com/tvitcom/fusion-framework/internal/test"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"

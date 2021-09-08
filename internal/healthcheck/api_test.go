@@ -1,8 +1,8 @@
 package healthcheck
 
 import (
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/test"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/internal/test"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"net/http"
 	"testing"
 )

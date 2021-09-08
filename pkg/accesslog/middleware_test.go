@@ -2,7 +2,7 @@ package accesslog
 
 import (
 	routing "github.com/go-ozzo/ozzo-routing/v2"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"

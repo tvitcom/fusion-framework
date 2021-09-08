@@ -6,7 +6,7 @@ import (
 	"fmt"
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"net/http"
 	"runtime/debug"
 )

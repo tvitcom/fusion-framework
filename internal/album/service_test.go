@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/entity"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/internal/entity"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

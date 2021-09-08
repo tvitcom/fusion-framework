@@ -2,9 +2,9 @@ package album
 
 import (
 	"github.com/go-ozzo/ozzo-routing/v2"
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/errors"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/pagination"
+	"github.com/tvitcom/fusion-framework/internal/errors"
+	"github.com/tvitcom/fusion-framework/pkg/log"
+	"github.com/tvitcom/fusion-framework/pkg/pagination"
 	"net/http"
 )
 

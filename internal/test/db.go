@@ -3,9 +3,9 @@ package test
 import (
 	dbx "github.com/go-ozzo/ozzo-dbx"
 	_ "github.com/lib/pq" // initialize posgresql for test
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/config"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/dbcontext"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/internal/config"
+	"github.com/tvitcom/fusion-framework/pkg/dbcontext"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"path"
 	"runtime"
 	"testing"

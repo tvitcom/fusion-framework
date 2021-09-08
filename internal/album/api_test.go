@@ -1,10 +1,10 @@
 package album
 
 import (
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/auth"
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/entity"
-	"github.com/tvitcom/qiangxue-ozzo-template/internal/test"
-	"github.com/tvitcom/qiangxue-ozzo-template/pkg/log"
+	"github.com/tvitcom/fusion-framework/internal/auth"
+	"github.com/tvitcom/fusion-framework/internal/entity"
+	"github.com/tvitcom/fusion-framework/internal/test"
+	"github.com/tvitcom/fusion-framework/pkg/log"
 	"net/http"
 	"testing"
 	"time"

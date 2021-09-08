@@ -1,4 +1,4 @@
-module github.com/tvitcom/qiangxue-ozzo-template
+module github.com/tvitcom/fusion-framework
 
 go 1.15
 
