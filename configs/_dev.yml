@@ -1,6 +1,6 @@
 app_name: "fusion-framework"
 db_type: "mysql"
-dsn: "mysql://appname:pass_to_appname@/appname?parseTime=true"
+dsn: "fusion:pass_to_fusion@tcp(127.0.0.1:3306)/fusion?parseTime=true"
 jwt_signing_key: "someSecretUtf832CharsForStrongValidJwtCryptography"
 jwt_expiration: 2
 mail_smtphost: "smtp.xxxxx.xxxx"
