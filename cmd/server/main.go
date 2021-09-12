@@ -5,20 +5,21 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/go-ozzo/ozzo-dbx"
-	"github.com/go-ozzo/ozzo-routing/v2"
-	"github.com/go-ozzo/ozzo-routing/v2/content"
-	"github.com/go-ozzo/ozzo-routing/v2/cors"
-	// _ "github.com/lib/pq"
+	//- "github.com/go-ozzo/ozzo-routing/v2"
+	//- "github.com/go-ozzo/ozzo-routing/v2/content"
+	//- "github.com/go-ozzo/ozzo-routing/v2/cors"
+	"github.com/julienschmidt/httprouter"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/tvitcom/fusion-framework/internal/album"
-	"github.com/tvitcom/fusion-framework/internal/auth"
+	// "github.com/tvitcom/fusion-framework/internal/auth"
 	"github.com/tvitcom/fusion-framework/internal/config"
-	"github.com/tvitcom/fusion-framework/internal/errors"
-	"github.com/tvitcom/fusion-framework/internal/healthcheck"
-	"github.com/tvitcom/fusion-framework/pkg/accesslog"
+	// "github.com/tvitcom/fusion-framework/internal/errors"
+	// "github.com/tvitcom/fusion-framework/internal/healthcheck"
+	// "github.com/tvitcom/fusion-framework/pkg/accesslog"
 	"github.com/tvitcom/fusion-framework/pkg/dbcontext"
 	"github.com/tvitcom/fusion-framework/pkg/log"
 	"net/http"
+	"fmt"
 	"os"
 	"time"
 )
@@ -54,15 +55,20 @@ func main() {
 	}()
 
 	// build HTTP server
-	hs := &http.Server{
-		Addr:    cfg.HttpEntrypoint,
-		Handler: registerRoutes(logger, dbcontext.New(db), cfg),
-	}
-
-	// start the HTTP server with graceful shutdown
-	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
 	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
-	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	
+	// start server on https port
+	// hs := http.Server{
+	// 	Handler: registerRoutes(logger, dbcontext.New(db), cfg),
+	// 	TLSConfig: &tls.Config{
+	// 		NextProtos: []string{"h2", "http/1.1"},
+	// 	},
+	// }
+	// if err := hs.ListenAndServe(cfg.HttpEntrypoint, nil); err != nil && err != http.ErrServerClosed {
+	// 	logger.Error(err)
+	// 	os.Exit(-1)
+	// }
+	if err := http.ListenAndServe(cfg.HttpEntrypoint, registerRoutes(logger, dbcontext.New(db), cfg)); err != nil && err != http.ErrServerClosed {
 		logger.Error(err)
 		os.Exit(-1)
 	}
@@ -70,33 +76,47 @@ func main() {
 
 // registerRoutes sets up the HTTP routing and builds an HTTP handler.
 func registerRoutes(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
-	router := routing.New()
+	//- router := routing.New()
+	router := httprouter.New()
 
-	router.Use(
-		accesslog.Handler(logger),
-		errors.Handler(logger),
-		content.TypeNegotiator(content.JSON),
-		cors.Handler(cors.AllowAll),
+	router.GET("/", getIndex)
+	
+	// router.Use(
+	// 	accesslog.Handler(logger),
+	// 	errors.Handler(logger),
+	// 	content.TypeNegotiator(content.JSON),
+	// 	cors.Handler(cors.AllowAll),
+	// )
+
+	// healthcheck.RegisterHandlers(router, Version)
+
+	// rg := router.Group("/v1")
+
+	// authHandler := auth.Handler(cfg.JWTSigningKey)
+
+	// album.RegisterHandlers(rg.Group(""),
+	// 	album.NewService(album.NewRepository(db, logger), logger),
+	// 	authHandler, 
+	// 	logger,
+	// )
+
+	album.RegisterHandlers(
+		router, // Router
+		album.NewService(album.NewRepository(db, logger), logger), // Service
+		//authHandler, // Auth handler: JWT-based authentication middleware
+		logger, // Logger
 	)
 
-	healthcheck.RegisterHandlers(router, Version)
-
-	rg := router.Group("/v1")
-
-	authHandler := auth.Handler(cfg.JWTSigningKey)
-
-	album.RegisterHandlers(rg.Group(""),
-		album.NewService(album.NewRepository(db, logger), logger),
-		authHandler, 
-		logger,
-	)
-
-	auth.RegisterHandlers(rg.Group(""),
-		auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
-		logger,
-	)
+	// auth.RegisterHandlers(rg.Group(""),
+	// 	auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
+	// 	logger,
+	// )
 
 	return router
+}
+
+func getIndex(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprint(w, "Welcome to Fusion index route!\n")
 }
 
 // logDBQuery returns a logging function that can be used to log SQL queries.
