@@ -30,6 +30,8 @@ testdata/postgres
 .pid
 
 # Secrets and credentials
+/data/*
+!/data/fusion_db_init.sql
 /configs/*
 !/configs/_dev.yml
 
