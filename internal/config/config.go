@@ -6,39 +6,63 @@ import (
 	"github.com/tvitcom/fusion-framework/pkg/log"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"strings"
+	"errors"
 )
 
 const (
-	defaultAppName	= "fusion"
-	defaultServerIp = "0.0.0.0"
-	defaultServerPort = "3000"
-	defaultJWTExpirationHours = 72
+	defaultJWTExpirationHours = 2
 )
 
 // Config represents an application configuration.
 type Config struct {
-	// the server port. Defaults to "0.0.0.0"
-	ServerIp string `yaml:"server_ip" env:"SERVER_IP"`
-	// the server port. Defaults to "3000"
-	ServerPort string `yaml:"server_port" env:"SERVER_PORT"`
-	// the data source name (DSN) for connecting to the database. required.
-	DSN string `yaml:"dsn" env:"DSN,secret"`
-	// the data source name (DSN) for connecting to the database. required.
-	DBType string `yaml:"dsn_type" env:"DSN_TYPE"`
-	// JWT signing key. required.
-	JWTSigningKey string `yaml:"jwt_signing_key" env:"JWT_SIGNING_KEY,secret"`
-	// JWT expiration in hours. Defaults to 72 hours (3 days)
-	JWTExpiration int `yaml:"jwt_expiration" env:"JWT_EXPIRATION"`
+	AppName  string      `yaml:"app_name" env:"APP_NAME"`
+	DSN string           `yaml:"dsn" env:"DSN"`
+	DBType string        `yaml:"db_type" env:"DB_TYPE"`
+	JWTSigningKey string `yaml:"jwt_signing_key" env:"JWT_SIGNING_KEY"`
+	JWTExpiration int    `yaml:"jwt_expiration" env:"JWT_EXPIRATION"`
+	MailSmtphost string  `yaml:"mail_smtphost" env:"MAIL_SMTPHOST"`
+	MailSmtpport string  `yaml:"mail_smtpport" env:"MAIL_SMTPPORT"`
+	MailUsername string  `yaml:"mail_username" env:"MAIL_USERNAME"`
+	MailPassword string  `yaml:"mail_password" env:"MAIL_PASSWORD"`
+	AppFqdn string       `yaml:"app_fqdn" env:"APP_FQDN"`
+	HttpEntrypoint string       `yaml:"http_entrypoint" env:"HTTP_ENTRYPOINt"`
+	WebservName string          `yaml:"webserv_name" env:"WEBSERV_NAME"`
+	GoogleCredentialFile string `yaml:"google_credential_file" env:"GOOGLE_CREDENTIAL_FILE"`
+	GoogleRedirectPath string   `yaml:"google_redirect_path" env:"GOOGLE_REDIRECT_PATH"`
+	AppSecretKey string  `yaml:"app_secret_key" env:"APP_SECRET_KEY"`
+	BizName string       `yaml:"biz_name" env:"BIZ_NAME"`
+	BizShortname string  `yaml:"biz_shortname" env:"BIZ_SHORTNAME"`
+	BizEmail string      `yaml:"biz_email" env:"BIZ_EMAIL"`
+	BizPhone string      `yaml:"biz_phone" env:"BIZ_PHONE"`
+	BizPhone2 string     `yaml:"biz_phone2" env:"BIZ_PHONE2"`
+	BizLogo string       `yaml:"biz_logo" env:"BIZ_LOGO"`
 }
 
 // Validate validates the application configuration.
 func (c Config) Validate() error {
 	return validation.ValidateStruct(&c,
-		validation.Field(&c.DSN, validation.Required),
+		validation.Field(&c.AppName, validation.Required),
 		validation.Field(&c.DBType, validation.Required),
-		validation.Field(&c.ServerIp, validation.Required),
-		validation.Field(&c.ServerPort, validation.Required),
+		validation.Field(&c.DSN, validation.Required),
 		validation.Field(&c.JWTSigningKey, validation.Required),
+		validation.Field(&c.JWTExpiration, validation.Required),
+		validation.Field(&c.MailSmtphost, validation.Required),
+		validation.Field(&c.MailSmtpport, validation.Required),
+		validation.Field(&c.MailUsername, validation.Required),
+		validation.Field(&c.MailPassword, validation.Required),
+		validation.Field(&c.AppFqdn, validation.Required),
+		validation.Field(&c.HttpEntrypoint, validation.Required),
+		validation.Field(&c.WebservName, validation.Required),
+		validation.Field(&c.GoogleCredentialFile, validation.Required),
+		validation.Field(&c.GoogleRedirectPath, validation.Required),
+		validation.Field(&c.AppSecretKey, validation.Required),
+		validation.Field(&c.BizName, validation.Required),
+		validation.Field(&c.BizShortname, validation.Required),
+		validation.Field(&c.BizEmail, validation.Required),
+		validation.Field(&c.BizPhone),
+		validation.Field(&c.BizPhone2),
+		validation.Field(&c.BizLogo, validation.Required),
 	)
 }
 
@@ -46,29 +70,34 @@ func (c Config) Validate() error {
 func Load(file string, logger log.Logger) (*Config, error) {
 	// default config
 	c := Config{
-		ServerIp: defaultServerIp,
-		ServerPort:    defaultServerPort,
 		JWTExpiration: defaultJWTExpirationHours,
 	}
-
 	// load from YAML config file
 	bytes, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("config file fs read failed")
 	}
 	if err = yaml.Unmarshal(bytes, &c); err != nil {
 		return nil, err
 	}
 
 	// load from environment variables prefixed with "APP_"
-	if err = env.New("APP_", logger.Infof).Load(&c); err != nil {
+	err = env.New("APP_", logger.Infof).Load(&c)
+	if err != nil {
 		return nil, err
 	}
 
 	// validation
 	if err = c.Validate(); err != nil {
-		return nil, err
+		return nil, errors.New("Validation failed")
 	}
 
 	return &c, err
+}
+
+func GetPort(ep string) (string, error) {
+	if strings.Index(ep, ":") > 0 {
+		return strings.SplitN(ep, ":",2)[1], nil
+	}
+	return "", errors.New("Absent port number in Entry point string")
 }

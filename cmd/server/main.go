@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"flag"
-	"fmt"
 	"github.com/go-ozzo/ozzo-dbx"
 	"github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
@@ -41,7 +40,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-	// connect to the database
 	db, err := dbx.MustOpen(cfg.DBType, cfg.DSN)
 	if err != nil {
 		logger.Error(err)
@@ -55,17 +53,15 @@ func main() {
 		}
 	}()
 
-	httpEndpoint := fmt.Sprintf(cfg.ServerIp+":%v", cfg.ServerPort)
-	
 	// build HTTP server
 	hs := &http.Server{
-		Addr:    httpEndpoint,
+		Addr:    cfg.HttpEntrypoint,
 		Handler: registerRoutes(logger, dbcontext.New(db), cfg),
 	}
 
 	// start the HTTP server with graceful shutdown
 	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
-	logger.Infof("server %v is running at %v", Version, httpEndpoint)
+	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
 	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logger.Error(err)
 		os.Exit(-1)
