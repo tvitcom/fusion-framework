@@ -57,6 +57,20 @@ func main() {
 	// build HTTP server
 	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
 	
+	r := httprouter.New()
+
+	r.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("Access-Control-Request-Method") != "" {
+	    // Set CORS headers
+	    header := w.Header()
+	    header.Set("Access-Control-Allow-Methods", header.Get("Allow"))
+	    header.Set("Access-Control-Allow-Origin", "*")
+	}
+
+	// Adjust status code to 204
+	w.WriteHeader(http.StatusNoContent)
+	})
+
 	// start server on https port
 	// hs := http.Server{
 	// 	Handler: registerRoutes(logger, dbcontext.New(db), cfg),
@@ -68,16 +82,14 @@ func main() {
 	// 	logger.Error(err)
 	// 	os.Exit(-1)
 	// }
-	if err := http.ListenAndServe(cfg.HttpEntrypoint, registerRoutes(logger, dbcontext.New(db), cfg)); err != nil && err != http.ErrServerClosed {
+	if err := http.ListenAndServe(cfg.HttpEntrypoint, registerRoutes(r, logger, dbcontext.New(db), cfg)); err != nil && err != http.ErrServerClosed {
 		logger.Error(err)
 		os.Exit(-1)
 	}
 }
 
 // registerRoutes sets up the HTTP routing and builds an HTTP handler.
-func registerRoutes(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
-	//- router := routing.New()
-	router := httprouter.New()
+func registerRoutes(router *httprouter.Router, logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
 
 	router.GET("/", getIndex)
 	
