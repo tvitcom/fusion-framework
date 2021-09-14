@@ -114,13 +114,13 @@ func registerRoutes(router *httprouter.Router, logger log.Logger, db *dbcontext.
 
 	album.RegisterHandlers(
 		router, // Router
-		album.NewService(album.NewRepository(db, logger), logger), // Service
+		album.NewAgregator(album.NewRepository(db, logger), logger), // Agregator
 		//authHandler, // Auth handler: JWT-based authentication middleware
 		logger, // Logger
 	)
 
 	// auth.RegisterHandlers(rg.Group(""),
-	// 	auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
+	// 	auth.NewAgregator(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
 	// 	logger,
 	// )
 

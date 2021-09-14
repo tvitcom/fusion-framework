@@ -45,18 +45,18 @@ func m3(next http.Handler) http.Handler {
 
 
 type resource struct {
-	service Service
+	agregator Agregator
 	logger  log.Logger
 }
 
 // RegisterHandlers sets up the routing of the HTTP handlers.
 func RegisterHandlers(
 	r *httprouter.Router, 
-	service Service, 
+	agregator Agregator, 
 	// authHandler routing.Handler, 
 	logger log.Logger,
 ) {
-	res := resource{service, logger}
+	res := resource{agregator, logger}
     // For exampple: gzip, ratelim, jwtauth, csp
     // indexMwConvey := alice.New(m1, m2, m3)
     // getMwConvey := alice.New(m1, m3)
@@ -91,19 +91,19 @@ func (res resource) index(w http.ResponseWriter, r *http.Request) {
 
 func (res resource) get(w http.ResponseWriter, r *http.Request) {
 	ps := r.Context().Value("params").(httprouter.Params)
-	album, _ := res.service.Get(r.Context(), ps.ByName("id"))
+	album, _ := res.agregator.Get(r.Context(), ps.ByName("id"))
 	fmt.Fprintf(w, "%v\n", album)
 	return
 }
 
 // func (res resource) query(c *routing.Context) error {
 // 	ctx := c.Request.Context()
-// 	count, err := res.service.Count(ctx)
+// 	count, err := res.agregator.Count(ctx)
 // 	if err != nil {
 // 		return err
 // 	}
 // 	pages := pagination.NewFromRequest(c.Request, count)
-// 	albums, err := res.service.Query(ctx, pages.Offset(), pages.Limit())
+// 	albums, err := res.agregator.Query(ctx, pages.Offset(), pages.Limit())
 // 	if err != nil {
 // 		return err
 // 	}
@@ -117,7 +117,7 @@ func (res resource) get(w http.ResponseWriter, r *http.Request) {
 // 		res.logger.With(c.Request.Context()).Info(err)
 // 		return errors.BadRequest("")
 // 	}
-// 	album, err := res.service.Create(c.Request.Context(), input)
+// 	album, err := res.agregator.Create(c.Request.Context(), input)
 // 	if err != nil {
 // 		return err
 // 	}
@@ -132,7 +132,7 @@ func (res resource) get(w http.ResponseWriter, r *http.Request) {
 // 		return errors.BadRequest("")
 // 	}
 
-// 	album, err := res.service.Update(c.Request.Context(), c.Param("id"), input)
+// 	album, err := res.agregator.Update(c.Request.Context(), c.Param("id"), input)
 // 	if err != nil {
 // 		return err
 // 	}
@@ -141,7 +141,7 @@ func (res resource) get(w http.ResponseWriter, r *http.Request) {
 // }
 
 // func (res resource) delete(c *routing.Context) error {
-// 	album, err := res.service.Delete(c.Request.Context(), c.Param("id"))
+// 	album, err := res.agregator.Delete(c.Request.Context(), c.Param("id"))
 // 	if err != nil {
 // 		return err
 // 	}

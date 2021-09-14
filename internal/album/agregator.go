@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-// Service encapsulates usecase logic for albums.
-type Service interface {
+// Agregator encapsulates usecase logic for albums
+type Agregator interface {
 	Get(ctx context.Context, id string) (Album, error)
 	Query(ctx context.Context, offset, limit int) ([]Album, error)
 	Count(ctx context.Context) (int, error)
@@ -28,7 +28,7 @@ type CreateAlbumRequest struct {
 	Name string `json:"name"`
 }
 
-// Validate validates the CreateAlbumRequest fields.
+// Validate validates the CreateAlbumRequest fields
 func (m CreateAlbumRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name, validation.Required, validation.Length(0, 128)),
@@ -40,26 +40,26 @@ type UpdateAlbumRequest struct {
 	Name string `json:"name"`
 }
 
-// Validate validates the CreateAlbumRequest fields.
+// Validate validates the CreateAlbumRequest fields
 func (m UpdateAlbumRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name, validation.Required, validation.Length(0, 128)),
 	)
 }
 
-type service struct {
+type agregator struct {
 	repo   Repository
 	logger log.Logger
 }
 
-// NewService creates a new album service.
-func NewService(repo Repository, logger log.Logger) Service {
-	return service{repo, logger}
+// NewAgregator creates a new album agregator.
+func NewAgregator(repo Repository, logger log.Logger) Agregator {
+	return agregator{repo, logger}
 }
 
 // Get returns the album with the specified the album ID.
-func (s service) Get(ctx context.Context, id string) (Album, error) {
-	album, err := s.repo.Get(ctx, id)
+func (ag agregator) Get(ctx context.Context, id string) (Album, error) {
+	album, err := ag.repo.Get(ctx, id)
 	if err != nil {
 		return Album{}, err
 	}
@@ -67,13 +67,13 @@ func (s service) Get(ctx context.Context, id string) (Album, error) {
 }
 
 // Create creates a new album.
-func (s service) Create(ctx context.Context, req CreateAlbumRequest) (Album, error) {
+func (ag agregator) Create(ctx context.Context, req CreateAlbumRequest) (Album, error) {
 	if err := req.Validate(); err != nil {
 		return Album{}, err
 	}
 	id := entity.GenerateUUID()
 	now := time.Now()
-	err := s.repo.Create(ctx, entity.Album{
+	err := ag.repo.Create(ctx, entity.Album{
 		ID:        id,
 		Name:      req.Name,
 		CreatedAt: now,
@@ -82,48 +82,48 @@ func (s service) Create(ctx context.Context, req CreateAlbumRequest) (Album, err
 	if err != nil {
 		return Album{}, err
 	}
-	return s.Get(ctx, id)
+	return ag.Get(ctx, id)
 }
 
 // Update updates the album with the specified ID.
-func (s service) Update(ctx context.Context, id string, req UpdateAlbumRequest) (Album, error) {
+func (ag agregator) Update(ctx context.Context, id string, req UpdateAlbumRequest) (Album, error) {
 	if err := req.Validate(); err != nil {
 		return Album{}, err
 	}
 
-	album, err := s.Get(ctx, id)
+	album, err := ag.Get(ctx, id)
 	if err != nil {
 		return album, err
 	}
 	album.Name = req.Name
 	album.UpdatedAt = time.Now()
 
-	if err := s.repo.Update(ctx, album.Album); err != nil {
+	if err := ag.repo.Update(ctx, album.Album); err != nil {
 		return album, err
 	}
 	return album, nil
 }
 
 // Delete deletes the album with the specified ID.
-func (s service) Delete(ctx context.Context, id string) (Album, error) {
-	album, err := s.Get(ctx, id)
+func (ag agregator) Delete(ctx context.Context, id string) (Album, error) {
+	album, err := ag.Get(ctx, id)
 	if err != nil {
 		return Album{}, err
 	}
-	if err = s.repo.Delete(ctx, id); err != nil {
+	if err = ag.repo.Delete(ctx, id); err != nil {
 		return Album{}, err
 	}
 	return album, nil
 }
 
-// Count returns the number of albums.
-func (s service) Count(ctx context.Context) (int, error) {
-	return s.repo.Count(ctx)
+// Count returns the number of albums
+func (ag agregator) Count(ctx context.Context) (int, error) {
+	return ag.repo.Count(ctx)
 }
 
 // Query returns the albums with the specified offset and limit.
-func (s service) Query(ctx context.Context, offset, limit int) ([]Album, error) {
-	items, err := s.repo.Query(ctx, offset, limit)
+func (ag agregator) Query(ctx context.Context, offset, limit int) ([]Album, error) {
+	items, err := ag.repo.Query(ctx, offset, limit)
 	if err != nil {
 		return nil, err
 	}
