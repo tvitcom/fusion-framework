@@ -86,16 +86,12 @@ func (res resource) index(w http.ResponseWriter, r *http.Request) {
     // get httprouter.Params from request context
     ps := r.Context().Value("params").(httprouter.Params)
     fmt.Fprintf(w, "Pagename is:, %s", ps.ByName("name"))
+    return
 }
 
 func (res resource) get(w http.ResponseWriter, r *http.Request) {
 	ps := r.Context().Value("params").(httprouter.Params)
-	// album, err := res.service.Get(r.Context(), ps.ByName("id"))
-	// if err != nil {
-	// 	return err
-	// }
 	album, _ := res.service.Get(r.Context(), ps.ByName("id"))
-	// c.Write(album)
 	fmt.Fprintf(w, "%v\n", album)
 	return
 }
@@ -152,3 +148,17 @@ func (res resource) get(w http.ResponseWriter, r *http.Request) {
 
 // 	return c.Write(album)
 // }
+/*
+func writeHtmlResult(w http.ResponseWriter, res string) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintln(w, res)
+}
+
+func writeJSONResult(w http.ResponseWriter, res interface{}) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(res); err != nil {
+		panic(err)
+	}
+}*/
