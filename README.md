@@ -22,7 +22,7 @@ Now features:
 - [x] Makefile for development
 
 Todo change:
-- [ ] replace ozzo-routing to julienschmidt's httprouter
+- [x] replace ozzo-routing to julienschmidt's httprouter
 - [ ] apply html templates/web-forms for manage records in db
 - [ ] HTTP redirection to HTTPS port
 - [ ] CORS Resource Sharing
