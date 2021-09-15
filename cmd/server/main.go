@@ -5,9 +5,10 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/go-ozzo/ozzo-dbx"
-	"github.com/go-ozzo/ozzo-routing/v2"
-	"github.com/go-ozzo/ozzo-routing/v2/content"
-	"github.com/go-ozzo/ozzo-routing/v2/cors"
+	// "github.com/go-ozzo/ozzo-routing/v2"
+	"github.com/gofiber/fiber/v2"
+	// "github.com/go-ozzo/ozzo-routing/v2/content"
+	// "github.com/go-ozzo/ozzo-routing/v2/cors"
 	
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/tvitcom/fusion-framework/internal/album"
@@ -54,48 +55,77 @@ func main() {
 	}()
 
 	// build HTTP server
-	hs := &http.Server{
-		Addr:    cfg.HttpEntrypoint,
-		Handler: buildHandler(logger, dbcontext.New(db), cfg),
-	}
+	// hs := &http.Server{
+	// 	Addr:    cfg.HttpEntrypoint,
+	// 	Handler: buildHandler(logger, dbcontext.New(db), cfg),
+	// }
 
 	// start the HTTP server with graceful shutdown
-	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
-	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
-	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	// go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
+	// logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
+	// if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	// 	logger.Error(err)
+	// 	os.Exit(-1)
+	// }
+
+	app := fiber.New(fiber.Config{
+		IdleTimeout: 5 * time.Second,
+	})
+	
+	buildHandler(app *fiber.App, logger, dbcontext.New(db), cfg)
+
+	go func() {
+		if err := app.Listen(cfg.HttpEntrypoint); err != nil {
+			logger.Error(err)
+			os.Exit(-1)
+		}
+	}()
+	c := make(chan os.Signal, 1)   // Create channel to signify a signal being sent
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM) // When an interrupt or termination signal is sent, notify the channel
+	_ = <-c // This blocks the main thread until an interrupt is received
+
+	_ = app.Shutdown()
+	
+	// Your cleanup tasks go here
+	if err := db.Close(); err != nil {
 		logger.Error(err)
-		os.Exit(-1)
 	}
+	logger.Infof("server %v was successful shutdown.")
 }
 
 // buildHandler sets up the HTTP routing and builds an HTTP handler.
-func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
-	router := routing.New()
+func buildHandler(app *fiber.App, logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
 
-	router.Use(
-		accesslog.Handler(logger),
-		errors.Handler(logger),
-		content.TypeNegotiator(content.JSON),
-		cors.Handler(cors.AllowAll),
-	)
+	// router := routing.New()
 
-	healthcheck.RegisterHandlers(router, Version)
+	// router.Use(
+	// 	accesslog.Handler(logger),
+	// 	errors.Handler(logger),
+	// 	content.TypeNegotiator(content.JSON),
+	// 	cors.Handler(cors.AllowAll),
+	// )
 
-	rg := router.Group("/v1")
+	// healthcheck.RegisterHandlers(router, Version)
 
-	authHandler := auth.Handler(cfg.JWTSigningKey)
+	// rg := router.Group("/v1")
 
-	album.RegisterHandlers(rg.Group(""),
-		album.NewAgregator(album.NewRepository(db, logger), logger),
-		authHandler, logger,
-	)
+	// authHandler := auth.Handler(cfg.JWTSigningKey)
 
-	auth.RegisterHandlers(rg.Group(""),
-		auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
-		logger,
-	)
+	// album.RegisterHandlers(rg.Group(""),
+	// 	album.NewAgregator(album.NewRepository(db, logger), logger),
+	// 	authHandler, logger,
+	// )
 
-	return router
+	// auth.RegisterHandlers(rg.Group(""),
+	// 	auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
+	// 	logger,
+	// )
+
+	// return router
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello world!")
+	})
 }
 
 // logDBQuery returns a logging function that can be used to log SQL queries.
