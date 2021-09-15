@@ -22,7 +22,6 @@ Now features:
 - [x] Makefile for development
 
 Todo change:
-- [x] replace ozzo-routing to julienschmidt's httprouter
 - [ ] apply html templates/web-forms for manage records in db
 - [ ] HTTP redirection to HTTPS port
 - [ ] CORS Resource Sharing
@@ -97,7 +96,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:3000`. 
 * `PUT /v1/albums/:id`: updates an existing album
 * `DELETE /v1/albums/:id`: deletes an album
 
-Try the URL `http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
+Try the URL `curl http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
 
 If you have `cURL` or some API client tools (e.g. [PostmanCanary](https://www.postman.com/downloads/canary/)), you may try the following 
 more complex scenarios:
