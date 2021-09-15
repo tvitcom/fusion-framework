@@ -5,29 +5,28 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/go-ozzo/ozzo-dbx"
-	//- "github.com/go-ozzo/ozzo-routing/v2"
-	//- "github.com/go-ozzo/ozzo-routing/v2/content"
-	//- "github.com/go-ozzo/ozzo-routing/v2/cors"
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-ozzo/ozzo-routing/v2"
+	"github.com/go-ozzo/ozzo-routing/v2/content"
+	"github.com/go-ozzo/ozzo-routing/v2/cors"
+	
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/tvitcom/fusion-framework/internal/album"
-	// "github.com/tvitcom/fusion-framework/internal/auth"
+	"github.com/tvitcom/fusion-framework/internal/auth"
 	"github.com/tvitcom/fusion-framework/internal/config"
-	// "github.com/tvitcom/fusion-framework/internal/errors"
-	// "github.com/tvitcom/fusion-framework/internal/healthcheck"
-	// "github.com/tvitcom/fusion-framework/pkg/accesslog"
+	"github.com/tvitcom/fusion-framework/internal/errors"
+	"github.com/tvitcom/fusion-framework/internal/healthcheck"
+	"github.com/tvitcom/fusion-framework/pkg/accesslog"
 	"github.com/tvitcom/fusion-framework/pkg/dbcontext"
 	"github.com/tvitcom/fusion-framework/pkg/log"
 	"net/http"
-	"fmt"
 	"os"
 	"time"
 )
 
 // Version indicates the current version of the application.
 var Version = "1.0.0"
-var defaultConfigFile = "./configs/dev.yml"
-var configFile = flag.String("config", defaultConfigFile, "path to the config file")
+
+var configFile = flag.String("config", "./configs/dev.yml", "path to the config file")
 
 func main() {
 	flag.Parse()
@@ -55,80 +54,48 @@ func main() {
 	}()
 
 	// build HTTP server
-	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
-	
-	r := httprouter.New()
-
-	r.GlobalOPTIONS = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Access-Control-Request-Method") != "" {
-	    // Set CORS headers
-	    header := w.Header()
-	    header.Set("Access-Control-Allow-Methods", header.Get("Allow"))
-	    header.Set("Access-Control-Allow-Origin", "*")
+	hs := &http.Server{
+		Addr:    cfg.HttpEntrypoint,
+		Handler: buildHandler(logger, dbcontext.New(db), cfg),
 	}
 
-	// Adjust status code to 204
-	w.WriteHeader(http.StatusNoContent)
-	})
-
-	// start server on https port
-	// hs := http.Server{
-	// 	Handler: registerRoutes(logger, dbcontext.New(db), cfg),
-	// 	TLSConfig: &tls.Config{
-	// 		NextProtos: []string{"h2", "http/1.1"},
-	// 	},
-	// }
-	// if err := hs.ListenAndServe(cfg.HttpEntrypoint, nil); err != nil && err != http.ErrServerClosed {
-	// 	logger.Error(err)
-	// 	os.Exit(-1)
-	// }
-	if err := http.ListenAndServe(cfg.HttpEntrypoint, registerRoutes(r, logger, dbcontext.New(db), cfg)); err != nil && err != http.ErrServerClosed {
+	// start the HTTP server with graceful shutdown
+	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
+	logger.Infof("server %v is running at %v", Version, cfg.HttpEntrypoint)
+	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logger.Error(err)
 		os.Exit(-1)
 	}
 }
 
-// registerRoutes sets up the HTTP routing and builds an HTTP handler.
-func registerRoutes(router *httprouter.Router, logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
+// buildHandler sets up the HTTP routing and builds an HTTP handler.
+func buildHandler(logger log.Logger, db *dbcontext.DB, cfg *config.Config) http.Handler {
+	router := routing.New()
 
-	router.GET("/", getIndex)
-	
-	// router.Use(
-	// 	accesslog.Handler(logger),
-	// 	errors.Handler(logger),
-	// 	content.TypeNegotiator(content.JSON),
-	// 	cors.Handler(cors.AllowAll),
-	// )
-
-	// healthcheck.RegisterHandlers(router, Version)
-
-	// rg := router.Group("/v1")
-
-	// authHandler := auth.Handler(cfg.JWTSigningKey)
-
-	// album.RegisterHandlers(rg.Group(""),
-	// 	album.NewService(album.NewRepository(db, logger), logger),
-	// 	authHandler, 
-	// 	logger,
-	// )
-
-	album.RegisterHandlers(
-		router, // Router
-		album.NewAgregator(album.NewRepository(db, logger), logger), // Agregator
-		//authHandler, // Auth handler: JWT-based authentication middleware
-		logger, // Logger
+	router.Use(
+		accesslog.Handler(logger),
+		errors.Handler(logger),
+		content.TypeNegotiator(content.JSON),
+		cors.Handler(cors.AllowAll),
 	)
 
-	// auth.RegisterHandlers(rg.Group(""),
-	// 	auth.NewAgregator(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
-	// 	logger,
-	// )
+	healthcheck.RegisterHandlers(router, Version)
+
+	rg := router.Group("/v1")
+
+	authHandler := auth.Handler(cfg.JWTSigningKey)
+
+	album.RegisterHandlers(rg.Group(""),
+		album.NewAgregator(album.NewRepository(db, logger), logger),
+		authHandler, logger,
+	)
+
+	auth.RegisterHandlers(rg.Group(""),
+		auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
+		logger,
+	)
 
 	return router
-}
-
-func getIndex(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Fprint(w, "Welcome to Fusion index route!\n")
 }
 
 // logDBQuery returns a logging function that can be used to log SQL queries.
