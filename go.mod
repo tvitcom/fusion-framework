@@ -8,6 +8,7 @@ require (
 	github.com/go-ozzo/ozzo-routing/v2 v2.3.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/gofiber/fiber/v2 v2.18.0
 	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.2
 	github.com/qiangxue/go-env v1.0.1
