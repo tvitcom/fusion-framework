@@ -38,6 +38,10 @@ run: ## run the API server
 dev: ## run the API server
 	go run ${LDFLAGS} cmd/server/main.go -config=configs/dev.yml
 
+.PHONY: prod
+prod: ## run the API server
+	go run ${LDFLAGS} cmd/server/main.go -config=configs/prod.yml
+
 .PHONY: run-restart
 run-restart: ## restart the API server
 	@pkill -P `cat $(PID_FILE)` || true
