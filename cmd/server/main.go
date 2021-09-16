@@ -55,9 +55,15 @@ func main() {
 	}()
 
 	router := fiber.New(fiber.Config{
-		IdleTimeout: 5 * time.Second,
-	})
-	
+		BodyLimit: (4 * 1024 * 1024),
+		ReadTimeout: 6 * time.Second,
+		WriteTimeout: 6 * time.Second,
+        Prefork:       (cfg.AppMode == "prod"),
+        CaseSensitive: false,
+        StrictRouting: true,
+        ServerHeader:  "fusion-server",
+    })
+
 	buildHandler(router, logger, dbcontext.New(db), cfg)
 
 	go func() {

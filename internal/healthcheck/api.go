@@ -5,21 +5,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+var appver string
+
 // RegisterHandlers registers the handlers that perform healthchecks.
-func RegisterHandlers(r *fiber.App, version string) {
-	// r.To("GET,HEAD", "/healthcheck", healthcheck(version))
-	r.Get("/healthcheck", healthcheck)
+func RegisterHandlers(r *fiber.App, ver string) {
+	appver = ver
+	r.Get("/healthcheck", check)
 }
 
 // healthcheck responds to a healthcheck request.
-func healthcheck(version string) {
-	// return func(c *fiber.Context) error {
-	// 	return c.Write("OK " + version)
-	// }
-	func(c *fiber.Ctx) error {
-	  return c.SendString("OK " + version)
-	  // return c.Write("OK " + version)
-
-	  return nil
-	}
+func check(c *fiber.Ctx) error {
+	return c.SendString("OK " + appver)
 }
