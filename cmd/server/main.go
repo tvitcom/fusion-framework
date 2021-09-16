@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"flag"
 	"github.com/go-ozzo/ozzo-dbx"
-	// "net/http"
-	// "github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/gofiber/fiber/v2"
 	// "github.com/go-ozzo/ozzo-routing/v2/content"
 	// "github.com/go-ozzo/ozzo-routing/v2/cors"
@@ -16,7 +14,7 @@ import (
 	// "github.com/tvitcom/fusion-framework/internal/auth"
 	"github.com/tvitcom/fusion-framework/internal/config"
 	// "github.com/tvitcom/fusion-framework/internal/errors"
-	// "github.com/tvitcom/fusion-framework/internal/healthcheck"
+	"github.com/tvitcom/fusion-framework/internal/healthcheck"
 	// "github.com/tvitcom/fusion-framework/pkg/accesslog"
 	"github.com/tvitcom/fusion-framework/pkg/dbcontext"
 	logz "github.com/tvitcom/fusion-framework/pkg/log"
@@ -103,11 +101,7 @@ func buildHandler(router *fiber.App, logger logz.Logger, db *dbcontext.DB, cfg *
 	  MaxAge:        3600,
 	})
 
-	// healthcheck.RegisterHandlers(router, Version)
-
-	router.Get("/healthcheck", func(c *fiber.Ctx) error {
-	  return c.SendString("OK " + Version)
-	})
+	healthcheck.RegisterHandlers(router, Version)
 
 	// rg := router.Group("/v1")
 

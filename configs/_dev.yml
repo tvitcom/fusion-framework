@@ -1,3 +1,4 @@
+app_mode: "dev"
 app_name: "fusion-framework"
 db_type: "mysql"
 dsn: "fusion:pass_to_fusion@tcp(127.0.0.1:3306)/fusion?parseTime=true"

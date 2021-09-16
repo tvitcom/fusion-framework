@@ -16,6 +16,7 @@ const (
 
 // Config represents an application configuration.
 type Config struct {
+	AppMode string      `yaml:"app_mode" env:"APP_MODE"`
 	AppName  string      `yaml:"app_name" env:"APP_NAME"`
 	DSN string           `yaml:"dsn" env:"DSN"`
 	DBType string        `yaml:"db_type" env:"DB_TYPE"`
@@ -42,6 +43,7 @@ type Config struct {
 // Validate validates the application configuration.
 func (c Config) Validate() error {
 	return validation.ValidateStruct(&c,
+		validation.Field(&c.AppMode, validation.Required),
 		validation.Field(&c.AppName, validation.Required),
 		validation.Field(&c.DBType, validation.Required),
 		validation.Field(&c.DSN, validation.Required),
@@ -89,7 +91,7 @@ func Load(file string, logger log.Logger) (*Config, error) {
 
 	// validation
 	if err = c.Validate(); err != nil {
-		return nil, errors.New("Validation failed")
+		return nil, err
 	}
 
 	return &c, err
