@@ -8,11 +8,13 @@ import (
 	"io/ioutil"
 	"strings"
 	"errors"
+	"flag"
 )
 
 const (
 	defaultJWTExpirationHours = 2
 )
+var configFile = flag.String("config", "./configs/dev.yml", "path to the config file")
 
 // Config represents an application configuration.
 type Config struct {
@@ -38,6 +40,10 @@ type Config struct {
 	BizPhone string      `yaml:"biz_phone" env:"BIZ_PHONE"`
 	BizPhone2 string     `yaml:"biz_phone2" env:"BIZ_PHONE2"`
 	BizLogo string       `yaml:"biz_logo" env:"BIZ_LOGO"`
+}
+
+func init() {
+	flag.Parse()
 }
 
 // Validate validates the application configuration.
@@ -69,13 +75,13 @@ func (c Config) Validate() error {
 }
 
 // Load returns an application configuration which is populated from the given configuration file and environment variables.
-func Load(file string, logger log.Logger) (*Config, error) {
+func Load(logger log.Logger) (*Config, error) {
 	// default config
 	c := Config{
 		JWTExpiration: defaultJWTExpirationHours,
 	}
 	// load from YAML config file
-	bytes, err := ioutil.ReadFile(file)
+	bytes, err := ioutil.ReadFile(*configFile)
 	if err != nil {
 		return nil, errors.New("config file fs read failed")
 	}

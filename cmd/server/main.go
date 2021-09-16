@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"flag"
 	"github.com/go-ozzo/ozzo-dbx"
 	"github.com/gofiber/fiber/v2"
 	// "github.com/go-ozzo/ozzo-routing/v2/content"
@@ -27,15 +26,12 @@ import (
 // Version indicates the current version of the application.
 var Version = "1.0.0"
 
-var configFile = flag.String("config", "./configs/dev.yml", "path to the config file")
-
 func main() {
-	flag.Parse()
 	// create root logger tagged with server version
 	logger := logz.New().With(nil, "version", Version)
 
 	// load application configurations
-	cfg, err := config.Load(*configFile, logger)
+	cfg, err := config.Load(logger)
 	if err != nil {
 		logger.Errorf("failed to load application configuration: %s", err)
 		os.Exit(-1)
@@ -107,6 +103,15 @@ func buildHandler(router *fiber.App, logger logz.Logger, db *dbcontext.DB, cfg *
 	  MaxAge:        3600,
 	})
 
+	router.Static("/", "./templates", fiber.Static{
+	  Compress:      true,
+	  ByteRange:     true,
+	  Browse:        true,
+	  Index:         "index.html",
+	  CacheDuration: 120 * time.Minute,
+	  MaxAge:        3600,
+	})
+
 	healthcheck.RegisterHandlers(router, Version)
 
 	// rg := router.Group("/v1")
@@ -125,17 +130,9 @@ func buildHandler(router *fiber.App, logger logz.Logger, db *dbcontext.DB, cfg *
 
 	// return router
 
-// api := r.Group("/api", handlerMW1)  // /api
-// v1 := api.Group("/v1", handlerMW2)   // /api/v1
-// v1.Get("/list", handler3)          // /api/v1/list
-// v1.Get("/user", handler4)          // /api/v1/user
-
-// v2 := api.Group("/v2", handlerMW3)   // /api/v2
-// v2.Get("/list", handlerList)          // /api/v2/list
-// v2.Get("/user", handlerUser)          // /api/v2/user
-	router.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello world!")
-	})
+	// router.Get("/", func(c *fiber.Ctx) error {
+	// 	return c.SendString("Hello world!")
+	// })
 }
 
 // logDBQuery returns a logging function that can be used to log SQL queries.
