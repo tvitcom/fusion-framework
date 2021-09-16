@@ -31,7 +31,7 @@ WORKDIR /app/
 COPY --from=container /usr/local/bin/migrate /usr/local/bin
 COPY --from=container /app/migrations ./migrations/
 COPY --from=container /app/server .
-COPY --from=container /app/cmd/server/entrypoint.sh .
+COPY --from=container /app/deployments/entrypoint.sh .
 COPY --from=container /app/config/*.yml ./config/
 RUN ls -la
 ENTRYPOINT ["./entrypoint.sh"]
