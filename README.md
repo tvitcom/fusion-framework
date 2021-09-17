@@ -48,7 +48,7 @@ The framework uses the following Go packages which can be replaced with your own
 
 # Building a Web Project with Fusion-framework
 
-This fusion-framework is designed to get you up and running with a project structure optimized for webapp developing RESTful API services in Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
+This fusion-framework is designed to get you up and running with a project structure optimized for HTML webapp developing and RESTful API services with Go. It promotes the best practices that follow the [SOLID principles](https://en.wikipedia.org/wiki/SOLID)
 and [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). 
 It encourages writing clean and idiomatic Go code. 
 
@@ -95,7 +95,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:3000`. 
 * `PUT /v1/albums/:id`: updates an existing album
 * `DELETE /v1/albums/:id`: deletes an album
 
-Try the URL `curl http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK v1.0.0"` displayed.
+Try the URL `curl http://localhost:3000/healthcheck` in a browser, and you should see something like `"OK 0.19 0.29 0.43 2/885 27692"` displayed.
 
 If you have `cURL` or some API client tools (e.g. [PostmanCanary](https://www.postman.com/downloads/canary/)), you may try the following 
 more complex scenarios:
@@ -261,9 +261,9 @@ storage (e.g. HashiCorp Vault) into environment variables in a bootstrap script 
 ## Deployment
 
 The application can be run as a docker container. You can use `make build-docker` to build the application 
-into a docker image. The docker container starts with the `cmd/server/entryscript.sh` script which reads 
+into a docker image. The docker container starts with the `deployments/entryscript.sh` script which reads 
 the `APP_ENV` environment variable to determine which configuration file to use. For example,
-if `APP_ENV` is `qa`, the application will be started with the `config/qa.yml` configuration file.
+if `APP_ENV` is `prod`, the application will be started with the `config/prod.yml` configuration file.
 
 You can also run `make build` to build an executable binary named `server`. Then start the API server using the following
 command,
