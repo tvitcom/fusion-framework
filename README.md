@@ -39,12 +39,12 @@ Todo change:
 
 The framework uses the following Go packages which can be replaced with your own favorite ones since their usages are mostly localized and abstracted. 
 
-* Routing: [ozzo-routing](https://github.com/go-ozzo/ozzo-routing)
-* Database access: [ozzo-dbx](https://github.com/go-ozzo/ozzo-dbx)
+* Routing: [ozzo-routing](https://github.com/go-ozzo/ozzo-routing) TODO: fiber
+* Database access: [ozzo-dbx](https://github.com/go-ozzo/ozzo-dbx) TODO: sqlx
 * Database migration: [golang-migrate](https://github.com/golang-migrate/migrate)
 * Data validation: [ozzo-validation](https://github.com/go-ozzo/ozzo-validation)
 * Logging: [zap](https://github.com/uber-go/zap)
-* JWT: [jwt-go](https://github.com/dgrijalva/jwt-go)
+* JWT: [jwt-go](https://github.com/dgrijalva/jwt-go) TODO: jose2go
 
 # Building a Web Project with Fusion-framework
 
