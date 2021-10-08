@@ -5,7 +5,7 @@ GoLang is a great programming language for building Web Projects. I wanted to bu
 I make some changes in the https://github.com/qiangxue/go-rest-api template according web development needs. 
 To get an idea of the features to be included in the project of this article provides a number of examples on how these features can be implemented ([Git Repo](https://github.com/brianwoo/server_side_dev_with_golang)). Structure of the project were be inspired from ozzo framework and https://github.com/qiangxue/go-rest-api former author of php yii framework and golang project layout [https://github.com/golang-standards/project-layout].
 
-Now features:
+Now features (form ozzo libraries):
 - [x] RESTful accepted format
 - [x] CRUD operations of a database table
 - [x] JWT authentication
@@ -22,22 +22,20 @@ Now features:
 - [x] Makefile for development
 
 Todo change:
-- [ ] replace ozzo-routing to julienschmidt's httprouter
-- [ ] apply html templates/web-forms for manage records in db
-- [ ] HTTP redirection to HTTPS port
-- [ ] CORS Resource Sharing
-- [ ] Replace jwt library from drigvaila to JOSE
+- [ ] replace ozzo-routing to fiber (and julienschmidt's httprouter in appropriate git-branch)
+- [ ] replace ozzo-dbx to sqlx
+- [ ] Default html template/web-forms for using frontend pages
+- [ ] Argon2 for user credentials
+- [ ] CORS, ratelimit, go-nude and other security features
+- [ ] Replace jwt library to jose2go
 - [ ] JWT authentication in the cookie HttpOnly store
-- [ ] Uploading files by secure pipelining
-- [ ] Golang standart structure
-- [ ] Default html template
-- [ ] OAuth2 with Google
-- [ ] OAuth2 with Facebook
+- [ ] Uploading image files by secure pipelining
+- [ ] OAuth2 with gcp, etc
 - [ ] Integration frontend development pipeline
 - [ ] Crud RESTAPI generator
-- [ ] Migrations
 - [ ] Healthchecks and metrics endpoints
 - [ ] Docker implementation for development pipeline
+- [ ] Swagger apidoc pipeline for development
 
 The framework uses the following Go packages which can be replaced with your own favorite ones since their usages are mostly localized and abstracted. 
 
